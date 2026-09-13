@@ -1,5 +1,7 @@
 # OptoDrum Connector
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22734759.svg)](https://doi.org/10.5281/zenodo.22734759)
+
 Turns OptoDrum `.summary` staircase exports into one structured,
 wide format `optodrum_report.csv`: one row per animal, with the visual
 acuity threshold and the contrast sensitivity threshold at every
