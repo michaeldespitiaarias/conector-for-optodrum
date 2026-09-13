@@ -1,0 +1,58 @@
+name: Build release executables
+
+# Builds OptoDrum Connector into a portable macOS .app and Windows
+# .exe, needing no Python or internet on the machine that runs them,
+# and attaches both to the GitHub Release for the pushed tag.
+# Trigger a release by pushing a tag: `git tag v1.0.0 && git push
+# origin v1.0.0`. `workflow_dispatch` also allows a manual run from
+# the Actions tab for a test build with no tag involved.
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r docs/requirements.txt
+          pip install pyinstaller
+
+      - name: Build
+        run: pyinstaller --noconfirm --clean packaging/build.spec
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          cd dist
+          zip -r "OptoDrum Connector-macOS.zip" "OptoDrum Connector.app"
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Compress-Archive -Path "dist/OptoDrum Connector.exe" -DestinationPath "dist/OptoDrum Connector-Windows.zip"
+
+      - name: Attach to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          fail_on_unmatched_files: true

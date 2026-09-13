@@ -1,0 +1,8 @@
+# OptoDrum Connector: Python runtime dependencies
+#
+# Tested with Python 3.10 to 3.12. tkinter is required and ships with the
+# standard CPython installer on macOS + Windows; Linux users may need to
+# install it separately (Debian / Ubuntu: `sudo apt install python3-tk`).
+
+pandas>=2.0
+pillow>=10.0            # app/OptoDrum Connector GUI.py, splash logo
