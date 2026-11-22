@@ -1,0 +1,3 @@
+Mouse_ID,Experiment,Genotype,Group,visual_acuity_cycles,contrast_0.011_cycles
+M002,optomotor,WT,Control,0.47,99.99
+M001,optomotor,WT,Control,0.52,32.5
